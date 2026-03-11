@@ -1,220 +1,517 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Deepak Restaurant</title>
-    <link rel="stylesheet" href="./styles.css" />
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <script defer src="./app.js"></script>
-  </head>
-  <body>
-    <header class="app-header no-print">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deepak Medical Shop - Pharmacy Management</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+  <div class="app" id="app">
+    <aside class="sidebar">
       <div class="brand">
-        <div class="logo" aria-hidden="true">DR</div>
-        <div>
-          <div class="title">Deepak Restaurant</div>
-          <div class="subtitle">Menu • Billing • Sales</div>
+        <div class="brand-logo">
+          <i class="fa-solid fa-notes-medical"></i>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">Deepak Medical Shop</span>
+          <span class="brand-subtitle">Pharmacy Management</span>
         </div>
       </div>
 
-      <nav class="tabs" role="navigation" aria-label="Main">
-        <button class="tab is-active" data-tab="pos" type="button">POS</button>
-        <button class="tab" data-tab="manage" type="button">Manage Menu</button>
-        <button class="tab" data-tab="report" type="button">Monthly Report</button>
+      <nav class="nav">
+        <button class="nav-item active" data-target="dashboard">
+          <i class="fa-solid fa-gauge-high"></i>
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-item" data-target="medicines">
+          <i class="fa-solid fa-pills"></i>
+          <span>Medicines</span>
+        </button>
+        <button class="nav-item" data-target="billing">
+          <i class="fa-solid fa-file-invoice-dollar"></i>
+          <span>Billing</span>
+        </button>
+        <button class="nav-item" data-target="qr">
+          <i class="fa-solid fa-qrcode"></i>
+          <span>QR Scan</span>
+        </button>
+        <button class="nav-item" data-target="reports">
+          <i class="fa-solid fa-chart-line"></i>
+          <span>Reports</span>
+        </button>
       </nav>
-    </header>
 
-    <main class="app">
-      <section class="view is-active" id="view-pos" aria-label="POS">
-        <div class="layout">
-          <section class="panel">
-            <div class="panel-header">
-              <h2>Menu</h2>
-              <div class="panel-actions">
-                <input id="menuSearch" class="input" placeholder="Search menu…" autocomplete="off" />
-              </div>
-            </div>
-            <div id="menuGrid" class="menu-grid" aria-live="polite"></div>
-          </section>
+      <div class="sidebar-footer">
+        <button id="themeToggle" class="theme-toggle" title="Toggle light / dark mode">
+          <i class="fa-solid fa-moon"></i>
+          <span>Dark mode</span>
+        </button>
+      </div>
+    </aside>
 
-          <aside class="panel bill" aria-label="Bill">
-            <div class="panel-header">
-              <h2>Cart & Bill</h2>
-              <div class="panel-actions">
-                <button id="clearCartBtn" class="btn btn-ghost" type="button">Clear cart</button>
-              </div>
-            </div>
-
-            <div class="bill-meta">
-              <div class="row">
-                <div class="label">Customer</div>
-                <input id="customerName" class="input" placeholder="(optional)" />
-              </div>
-              <div class="row">
-                <div class="label">Table</div>
-                <input id="tableNo" class="input" placeholder="(optional)" />
-              </div>
-            </div>
-
-            <div id="cartList" class="cart" aria-live="polite"></div>
-
-            <div class="totals">
-              <div class="line">
-                <span>Subtotal</span>
-                <strong id="subtotalText">₹0.00</strong>
-              </div>
-              <div class="line">
-                <span>Tax (%)</span>
-                <div class="inline">
-                  <input id="taxPct" class="input input-sm" type="number" min="0" step="0.5" value="0" />
-                </div>
-              </div>
-              <div class="line grand">
-                <span>Total</span>
-                <strong id="totalText">₹0.00</strong>
-              </div>
-            </div>
-
-            <div class="bill-actions no-print">
-              <button id="payNowBtn" class="btn btn-primary" type="button">Pay now (QR)</button>
-              <button id="completeSaleBtn" class="btn" type="button">Complete sale</button>
-              <button id="printBtn" class="btn btn-ghost" type="button">Print bill</button>
-            </div>
-
-            <div class="print-only print-header">
-              <div class="print-title">Deepak Restaurant</div>
-              <div id="printMeta" class="print-meta"></div>
-            </div>
-
-            <div class="print-only print-footer">
-              <div>Thank you. Visit again.</div>
-            </div>
-          </aside>
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1 class="page-title" id="pageTitle">Dashboard</h1>
+          <p class="page-subtitle">Smart management for your pharmacy.</p>
         </div>
-      </section>
-
-      <section class="view" id="view-manage" aria-label="Manage menu">
-        <div class="layout one">
-          <section class="panel">
-            <div class="panel-header">
-              <h2>Manage Menu (CRUD)</h2>
-              <div class="panel-actions">
-                <button id="resetMenuBtn" class="btn btn-ghost" type="button">Reset to default</button>
-              </div>
+        <div class="topbar-right">
+          <div class="date-pill" id="currentDate"></div>
+          <div class="user-chip">
+            <div class="avatar">
+              <i class="fa-solid fa-user-nurse"></i>
             </div>
-
-            <form id="menuForm" class="form">
-              <input type="hidden" id="menuId" />
-              <div class="grid2">
-                <div>
-                  <label class="label" for="menuName">Item name</label>
-                  <input id="menuName" class="input" placeholder="e.g., Idly" required />
-                </div>
-                <div>
-                  <label class="label" for="menuPrice">Price (₹)</label>
-                  <input id="menuPrice" class="input" type="number" min="0" step="1" placeholder="e.g., 30" required />
-                </div>
-              </div>
-              <div class="grid2">
-                <div>
-                  <label class="label" for="menuCategory">Category</label>
-                  <input id="menuCategory" class="input" placeholder="e.g., Breakfast / Drinks" />
-                </div>
-                <div>
-                  <label class="label" for="menuImage">Image URL (optional)</label>
-                  <input id="menuImage" class="input" placeholder="https://…" />
-                </div>
-              </div>
-              <div class="grid2">
-                <div>
-                  <label class="label" for="menuActive">Active</label>
-                  <select id="menuActive" class="input">
-                    <option value="true" selected>Yes</option>
-                    <option value="false">No</option>
-                  </select>
-                </div>
-                <div class="form-actions">
-                  <button class="btn btn-primary" type="submit">Save item</button>
-                  <button id="cancelEditBtn" class="btn btn-ghost" type="button">Cancel</button>
-                </div>
-              </div>
-            </form>
-
-            <div class="divider"></div>
-
-            <div class="panel-header">
-              <h3>Menu items</h3>
-              <div class="panel-actions">
-                <input id="manageSearch" class="input" placeholder="Search items…" autocomplete="off" />
-              </div>
+            <div class="user-info">
+              <span class="user-name">Pharmacist</span>
+              <span class="user-role">Admin</span>
             </div>
-            <div id="manageList" class="manage-list" aria-live="polite"></div>
-          </section>
+          </div>
         </div>
-      </section>
+      </header>
 
-      <section class="view" id="view-report" aria-label="Monthly report">
-        <div class="layout one">
-          <section class="panel">
-            <div class="panel-header">
-              <h2>Monthly Sales Report</h2>
-              <div class="panel-actions">
-                <button id="exportJsonBtn" class="btn btn-ghost" type="button">Export data (JSON)</button>
-                <button id="clearSalesBtn" class="btn btn-ghost danger" type="button">Clear sales data</button>
+      <section class="content">
+        <!-- Dashboard -->
+        <section id="dashboard" class="page-section active">
+          <div class="cards-grid">
+            <div class="card stat-card">
+              <div class="card-body">
+                <div class="stat-icon stat-icon-primary">
+                  <i class="fa-solid fa-pills"></i>
+                </div>
+                <div>
+                  <p class="stat-label">Total Medicines</p>
+                  <p class="stat-value" id="statTotalMedicines">0</p>
+                </div>
+              </div>
+              <div class="card-footer">
+                <span class="stat-footer-label">Active items in stock</span>
               </div>
             </div>
 
-            <div class="report-filters">
+            <div class="card stat-card">
+              <div class="card-body">
+                <div class="stat-icon stat-icon-success">
+                  <i class="fa-solid fa-sack-dollar"></i>
+                </div>
+                <div>
+                  <p class="stat-label">Today Sales</p>
+                  <p class="stat-value" id="statTodaySales">₹0.00</p>
+                </div>
+              </div>
+              <div class="card-footer">
+                <span class="stat-footer-label" id="statTodayBills">0 bills</span>
+              </div>
+            </div>
+
+            <div class="card stat-card warning">
+              <div class="card-body">
+                <div class="stat-icon stat-icon-warning">
+                  <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <div>
+                  <p class="stat-label">Low Stock</p>
+                  <p class="stat-value" id="statLowStock">0</p>
+                </div>
+              </div>
+              <div class="card-footer">
+                <span class="stat-footer-label">Items need restock</span>
+              </div>
+            </div>
+
+            <div class="card stat-card danger">
+              <div class="card-body">
+                <div class="stat-icon stat-icon-danger">
+                  <i class="fa-solid fa-skull-crossbones"></i>
+                </div>
+                <div>
+                  <p class="stat-label">Near Expiry</p>
+                  <p class="stat-value" id="statNearExpiry">0</p>
+                </div>
+              </div>
+              <div class="card-footer">
+                <span class="stat-footer-label">Expiring within 30 days</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">
+                  <i class="fa-solid fa-heart-pulse"></i>
+                  Live Pharmacy Snapshot
+                </h2>
+              </div>
+              <div class="card-body">
+                <ul class="timeline" id="activityTimeline">
+                  <!-- Filled by JS -->
+                </ul>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">
+                  <i class="fa-solid fa-bell"></i>
+                  Alerts
+                </h2>
+              </div>
+              <div class="card-body" id="alertContainer">
+                <p class="muted">No critical alerts. You're all set!</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Medicines -->
+        <section id="medicines" class="page-section">
+          <div class="card">
+            <div class="card-header between">
               <div>
-                <label class="label" for="reportMonth">Month</label>
-                <input id="reportMonth" class="input" type="month" />
+                <h2 class="card-title">
+                  <i class="fa-solid fa-pills"></i>
+                  Medicines Inventory
+                </h2>
+                <p class="muted">Manage tablets, syrups, injections and more.</p>
               </div>
-              <div>
-                <label class="label" for="reportSearch">Search</label>
-                <input id="reportSearch" class="input" placeholder="Customer / table / item…" />
-              </div>
-              <div class="report-summary">
-                <div class="kpi">
-                  <div class="kpi-label">Orders</div>
-                  <div id="kpiOrders" class="kpi-value">0</div>
+              <button class="btn primary" id="btnAddMedicine">
+                <i class="fa-solid fa-plus"></i>
+                Add Medicine
+              </button>
+            </div>
+            <div class="card-body">
+              <div class="toolbar">
+                <div class="input-group">
+                  <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                  <input type="text" id="medicineSearch" placeholder="Search by name, company or category" />
                 </div>
-                <div class="kpi">
-                  <div class="kpi-label">Revenue</div>
-                  <div id="kpiRevenue" class="kpi-value">₹0.00</div>
+                <select id="categoryFilter" class="select">
+                  <option value="">All Categories</option>
+                  <option value="Tablet">Tablet</option>
+                  <option value="Syrup">Syrup</option>
+                  <option value="Injection">Injection</option>
+                  <option value="Ointment">Ointment</option>
+                  <option value="Other">Other</option>
+                </select>
+                <div class="chip-row" role="group" aria-label="Quick filters">
+                  <button class="chip-btn active" id="btnAllMeds" type="button">
+                    <i class="fa-solid fa-layer-group"></i>
+                    All
+                  </button>
+                  <button class="chip-btn" id="btnTabletsOnly" type="button">
+                    <i class="fa-solid fa-tablets"></i>
+                    Tablets
+                  </button>
+                </div>
+              </div>
+
+              <div class="table-wrapper">
+                <table class="table" id="medicinesTable">
+                  <thead>
+                    <tr>
+                      <th>Image</th>
+                      <th>Medicine Name</th>
+                      <th>Company</th>
+                      <th>Category</th>
+                      <th>Stock</th>
+                      <th>Price (₹)</th>
+                      <th>Expiry</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Filled by JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Billing -->
+        <section id="billing" class="page-section">
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">
+                  <i class="fa-solid fa-prescription-bottle-medical"></i>
+                  Create Bill
+                </h2>
+              </div>
+              <div class="card-body">
+                <div class="form-row">
+                  <label for="billCustomer">Customer Name</label>
+                  <input type="text" id="billCustomer" placeholder="Customer name (optional)" />
+                </div>
+                <div class="form-row">
+                  <label for="billMedicine">Select Medicine</label>
+                  <select id="billMedicine" class="select"></select>
+                </div>
+                <div class="form-row">
+                  <label for="billQuantity">Quantity</label>
+                  <input type="number" id="billQuantity" min="1" value="1" />
+                </div>
+                <button class="btn primary full" id="btnAddToBill">
+                  <i class="fa-solid fa-cart-plus"></i>
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header between">
+                <h2 class="card-title">
+                  <i class="fa-solid fa-receipt"></i>
+                  Current Bill
+                </h2>
+                <button class="btn ghost" id="btnClearBill">
+                  <i class="fa-solid fa-trash-can"></i>
+                  Clear
+                </button>
+              </div>
+              <div class="card-body">
+                <div class="table-wrapper small">
+                  <table class="table" id="billTable">
+                    <thead>
+                      <tr>
+                        <th>Medicine</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+                <div class="bill-summary">
+                  <div class="bill-row">
+                    <span>Subtotal</span>
+                    <span id="billSubtotal">₹0.00</span>
+                  </div>
+                  <div class="bill-row">
+                    <span>GST (5%)</span>
+                    <span id="billTax">₹0.00</span>
+                  </div>
+                  <div class="bill-row total">
+                    <span>Grand Total</span>
+                    <span id="billTotal">₹0.00</span>
+                  </div>
+                </div>
+                <button class="btn success full" id="btnProceedPayment">
+                  <i class="fa-solid fa-indian-rupee-sign"></i>
+                  Proceed to Payment (QR)
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- QR -->
+        <section id="qr" class="page-section">
+          <div class="card qr-card">
+            <div class="card-header">
+              <h2 class="card-title">
+                <i class="fa-solid fa-qrcode"></i>
+                QR Code Payment
+              </h2>
+            </div>
+            <div class="card-body qr-body">
+              <div class="qr-left">
+                <p class="muted">Scan the QR code using any UPI app to simulate a payment.</p>
+                <div class="fake-upi-card">
+                  <div class="fake-upi-header">
+                    <span class="fake-upi-logo">UPI</span>
+                    <span class="fake-upi-id">deepakmedical@upi • 8248158746</span>
+                  </div>
+                  <div class="fake-upi-amount" id="qrAmount">₹0.00</div>
+                  <div id="qrcode" class="qrcode"></div>
+                </div>
+              </div>
+              <div class="qr-right">
+                <h3>Payment Simulation</h3>
+                <p class="muted">Click the button below after "scanning" to confirm payment.</p>
+                <button class="btn primary full" id="btnSimulateScan">
+                  <i class="fa-solid fa-mobile-screen-button"></i>
+                  I have scanned & paid
+                </button>
+                <div id="paymentStatus" class="payment-status">
+                  <!-- Status text -->
+                </div>
+
+                <div class="card" style="margin-top:14px">
+                  <div class="card-header between">
+                    <h2 class="card-title" style="font-size:14px">
+                      <i class="fa-solid fa-clock-rotate-left"></i>
+                      Last Bills
+                    </h2>
+                    <button class="btn ghost" id="btnPrintLatestBill" type="button">
+                      <i class="fa-solid fa-print"></i>
+                      Print latest
+                    </button>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-wrapper small">
+                      <table class="table" id="lastBillsTable">
+                        <thead>
+                          <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Customer</th>
+                            <th>Items</th>
+                            <th>Total (₹)</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody></tbody>
+                      </table>
+                    </div>
+                    <p class="muted" style="margin:10px 0 0">Tip: Generate a bill from Billing → proceed to QR → confirm payment.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Reports -->
+        <section id="reports" class="page-section">
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-header between">
+                <div>
+                  <h2 class="card-title">
+                    <i class="fa-solid fa-calendar-day"></i>
+                    Daily Sales Report
+                  </h2>
+                  <p class="muted">Summary of bills generated per day.</p>
+                </div>
+                <input type="date" id="reportDate" class="date-input" />
+              </div>
+              <div class="card-body">
+                <div class="report-summary">
+                  <div>
+                    <span class="report-label">Total bills</span>
+                    <span class="report-value" id="reportBillCount">0</span>
+                  </div>
+                  <div>
+                    <span class="report-label">Total sales</span>
+                    <span class="report-value" id="reportTotalSales">₹0.00</span>
+                  </div>
+                </div>
+                <div class="table-wrapper small">
+                  <table class="table" id="reportSalesTable">
+                    <thead>
+                      <tr>
+                        <th>Time</th>
+                        <th>Customer</th>
+                        <th>Items</th>
+                        <th>Total (₹)</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
                 </div>
               </div>
             </div>
 
-            <div id="reportTable" class="report-table" aria-live="polite"></div>
-          </section>
-        </div>
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">
+                  <i class="fa-solid fa-clipboard-list"></i>
+                  Stock Report
+                </h2>
+              </div>
+              <div class="card-body">
+                <div class="table-wrapper small">
+                  <table class="table" id="reportStockTable">
+                    <thead>
+                      <tr>
+                        <th>Medicine</th>
+                        <th>Category</th>
+                        <th>Stock</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </section>
     </main>
+  </div>
 
-    <dialog id="qrModal" class="modal no-print">
-      <div class="modal-body">
-        <div class="modal-header">
-          <h3>Pay now</h3>
-          <button id="closeQrBtn" class="icon-btn" type="button" aria-label="Close">✕</button>
-        </div>
-
-        <div class="qr-grid">
-          <div>
-            <div class="label">Amount</div>
-            <div id="qrAmount" class="qr-amount">₹0.00</div>
-            <div class="hint">Scan QR to pay. Phone: <strong>8248158746</strong></div>
-          </div>
-          <div class="qr-box">
-            <div id="qrCode"></div>
-          </div>
-        </div>
-
-        <div class="modal-actions">
-          <button id="copyUpiBtn" class="btn btn-ghost" type="button">Copy UPI link</button>
-          <button id="closeQrBtn2" class="btn btn-primary" type="button">Done</button>
-        </div>
+  <!-- Medicine Modal -->
+  <div class="modal" id="medicineModal" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 id="medicineModalTitle">Add Medicine</h2>
+        <button class="icon-btn" id="medicineModalClose">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
       </div>
-    </dialog>
-  </body>
+      <div class="modal-body">
+        <form id="medicineForm">
+          <input type="hidden" id="medicineId" />
+          <div class="form-grid">
+            <div class="form-row">
+              <label for="medicineName">Medicine Name</label>
+              <input type="text" id="medicineName" required />
+            </div>
+            <div class="form-row">
+              <label for="companyName">Company Name</label>
+              <input type="text" id="companyName" required />
+            </div>
+            <div class="form-row">
+              <label for="medicineCategory">Category</label>
+              <select id="medicineCategory" class="select" required>
+                <option value="Tablet">Tablet</option>
+                <option value="Syrup">Syrup</option>
+                <option value="Injection">Injection</option>
+                <option value="Ointment">Ointment</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label for="stockQuantity">Stock Quantity</label>
+              <input type="number" id="stockQuantity" min="0" required />
+            </div>
+            <div class="form-row">
+              <label for="medicinePrice">Price (₹)</label>
+              <input type="number" id="medicinePrice" step="0.01" min="0" required />
+            </div>
+            <div class="form-row">
+              <label for="expiryDate">Expiry Date</label>
+              <input type="date" id="expiryDate" required />
+            </div>
+            <div class="form-row">
+              <label for="medicineImage">Image URL (optional)</label>
+              <input type="url" id="medicineImage" placeholder="Paste image URL or leave blank" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn ghost" id="medicineModalCancel">Cancel</button>
+            <button type="submit" class="btn primary" id="medicineModalSave">
+              Save Medicine
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js" integrity="sha512-DVAwmZDWwrHgMHl3zDN9OIb0REkd2a8KexmziU9MO3R1PaoVeg7/9hRsojtf+110iPD/4/rR0J8ImB/eoh7Zxg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="app.js"></script>
+</body>
 </html>
+
