@@ -1,0 +1,42 @@
+Create a creative and modern Medical Shop Management Web Application using HTML, CSS, JavaScript and optionally a simple backend (Node.js or Python Flask).
+
+The website should include the following features:
+
+1. Dashboard
+- Modern medical themed UI
+- Navigation menu (Dashboard, Medicines, Billing, QR Scan, Reports)
+
+2. Medicines List
+- Display all tablets and medicines in a table
+- Columns: Medicine Name, Company Name, Category, Stock Quantity, Price, Expiry Date
+- Search and filter option
+- Add / Edit / Delete medicines
+
+3. Billing System
+- Select medicines and quantity
+- Automatically calculate total price
+- Generate bill with date and medicine details
+- Download or print bill
+
+4. QR Code Payment
+- Generate QR code for payment
+- Simulate scanning QR code to confirm payment
+- After payment show "Payment Successful"
+
+5. Edit and Update
+- Allow editing medicine details and price
+- Update stock automatically after billing
+
+6. Extra Creative Features
+- Dark and Light mode
+- Medicine image display
+- Low stock alert
+- Expiry warning system
+- Clean pharmacy themed design (green + white colors)
+
+7. Reports
+- Daily sales report
+- Medicine stock report
+
+Make the UI responsive and visually attractive with icons and cards. 
+Add animations and make it look like a professional pharmacy management system.
